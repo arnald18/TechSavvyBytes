@@ -1,35 +1,39 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
-class Gallery extends Model {}
+class Comment extends Model {}
 
-Gallery.init(
+Comment.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
-    name: {
+    contents: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    starting_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    author_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: "user",
+        key: "id",
+      },
     },
-    ending_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    blog_post_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: "blog_post",
+        key: "id",
+      },
     },
   },
   {
     sequelize,
     freezeTableName: true,
-    underscored: true,
-    modelName: 'gallery',
+    modelName: "comment",
   }
 );
-
-module.exports = Gallery;
+module.exports = Comment;
